@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ class_info.name }} - 学生名单</h2>
+<ul>
+    {% for student in students %}
+    <li>{{ student.name }} (学号：{{ student.student_id }})</li>
+    {% endfor %}
+</ul>
+{% endblock %}

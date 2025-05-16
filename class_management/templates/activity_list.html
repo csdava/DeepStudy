@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ class_info.name }} - 活动管理</h2>
+<ul>
+    {% for activity in activities %}
+    <li>
+        <strong>{{ activity.name }}</strong>
+        <ul>
+            <li>时间：{{ activity.time }}</li>
+            <li>地点：{{ activity.location }}</li>
+            <li>参与人员：{% for participant in activity.participants.all %}{{ participant.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</li>
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

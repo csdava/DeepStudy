@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}讨论主题列表{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>讨论主题列表</h2>
+    </div>
+    <div class="col text-end">
+        <a href="{% url 'create_topic' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> 创建新主题
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    {% for topic in topics %}
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ topic.name }}</h5>
+                <p class="card-text">{{ topic.description|truncatewords:30 }}</p>
+                <p class="text-muted">
+                    <small>
+                        <i class="fas fa-users"></i> 讨论范围: {{ topic.scope }}
+                        <br>
+                        <i class="fas fa-clock"></i> 创建时间: {{ topic.created_at|date:"Y-m-d H:i" }}
+                    </small>
+                </p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'topic_details' topic.id %}" class="btn btn-outline-primary">
+                    <i class="fas fa-comments"></i> 查看讨论
+                </a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col">
+        <div class="alert alert-info">
+            暂无讨论主题，点击右上角按钮创建新主题。
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

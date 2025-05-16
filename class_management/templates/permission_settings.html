@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ class_info.name }} - 权限设置</h2>
+<form method="post">
+    {% csrf_token %}
+    <label>
+        查看成绩权限：
+        <input type="checkbox" name="view_scores" {% if class_info.permission_view_scores %}checked{% endif %}>
+    </label>
+    <label>
+        作业截止时间：
+        <input type="datetime-local" name="homework_deadline" value="{{ class_info.homework_deadline|date:'Y-m-d\TH:i' }}">
+    </label>
+    <button type="submit">保存</button>
+</form>
+{% endblock %}

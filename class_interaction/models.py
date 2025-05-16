@@ -1,23 +1,33 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
-class DiscussionThread(models.Model):
-    """
-    班级讨论主题
-    """
-    class_instance = models.ForeignKey('class_management.Class', on_delete=models.CASCADE)
-    creator = models.ForeignKey('user_management.UserProfile', on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    content = models.TextField()
+class DiscussionTopic(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    scope = models.CharField(max_length=50)  # 班级、小组等
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+class DiscussionPost(models.Model):
+    topic = models.ForeignKey(DiscussionTopic, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    attachment = models.FileField(upload_to='attachments/', blank=True, null=True)
     is_pinned = models.BooleanField(default=False)
+    likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
 
-class DiscussionReply(models.Model):
-    """
-    讨论回复记录
-    """
-    thread = models.ForeignKey(DiscussionThread, on_delete=models.CASCADE)
-    author = models.ForeignKey('user_management.UserProfile', on_delete=models.CASCADE)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    parent_reply = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    def __str__(self):
+        return f"Post by {self.created_by} on {self.topic}"
+
+class InteractionStatistics(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    post_count = models.IntegerField(default=0)
+    reply_count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"Stats for {self.user}"

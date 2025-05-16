@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ topic.name }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>{{ topic.name }}</h2>
+        <p class="text-muted">
+            <i class="fas fa-users"></i> 讨论范围: {{ topic.scope }}
+            <br>
+            <i class="fas fa-clock"></i> 创建时间: {{ topic.created_at|date:"Y-m-d H:i" }}
+        </p>
+        <p>{{ topic.description }}</p>
+    </div>
+    <div class="col-auto">
+        <a href="{% url 'create_post' topic.id %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> 发表帖子
+        </a>
+    </div>
+</div>
+
+<div class="posts-container">
+    {% for post in posts %}
+    <div class="card mb-4 {% if post.is_pinned %}border-primary{% endif %}">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <strong>{{ post.created_by.username }}</strong>
+                {% if post.is_pinned %}
+                <span class="badge bg-primary ms-2">置顶</span>
+                {% endif %}
+            </div>
+            <small class="text-muted">{{ post.created_at|date:"Y-m-d H:i" }}</small>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ post.content }}</p>
+            {% if post.attachment %}
+            <div class="mt-2">
+                <a href="{{ post.attachment.url }}" class="btn btn-sm btn-outline-secondary">
+                    <i class="fas fa-paperclip"></i> 下载附件
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        <div class="card-footer d-flex justify-content-between align-items-center">
+            <div>
+                <form action="{% url 'like_post' post.id %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-thumbs-up"></i> 点赞 ({{ post.likes.count }})
+                    </button>
+                </form>
+                {% if user.is_staff %}
+                <form action="{% url 'pin_post' post.id %}" method="post" class="d-inline ms-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-thumbtack"></i> 置顶
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-info">
+        暂无帖子，快来发表第一个帖子吧！
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

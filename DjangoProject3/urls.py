@@ -14,22 +14,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-# from django.contrib import admin
-from django.urls import path
-
-
-
-    #
-from django.contrib import admin
-from django.urls import include, path
 from django.contrib import admin
 from django.urls import path, include
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('app01/', include('app01.urls')),  # 使用非空路径前缀
-    path('class_performance/', include('class_performance.urls')),
-]
-# urls.py
+from app01 import views
 
-    # 确保路由配置正确
+urlpatterns = [
+    path('', views.index, name='home'),  # Add root URL pattern
+    path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),  # 添加认证URL
+    path('app01/', include('app01.urls')),
+    path('class_performance/', include('class_performance.urls')),
+    path('class_management/', include('class_management.urls', namespace='class_management')),
+    path('class_interaction/', include('class_interaction.urls')),
+]
     # 其他路由...

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>班级信息</h2>
+<ul>
+    {% for class in classes %}
+    <li>
+        <strong>{{ class.name }}</strong>
+        <ul>
+            <li>年级：{{ class.grade }}</li>
+            <li>学科：{{ class.subject }}</li>
+            <li>学生人数：{{ class.students.count }}</li>
+            <li>查看成绩权限：{{ class.permission_view_scores }}</li>
+            <li>作业截止时间：{{ class.homework_deadline }}</li>
+        </ul>
+        <a href="{% url 'student_list' class.id %}">学生名单</a>
+        <a href="{% url 'activity_list' class.id %}">活动管理</a>
+        <a href="{% url 'permission_settings' class.id %}">权限设置</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

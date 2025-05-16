@@ -3,6 +3,13 @@ from django.db.models import Avg, Count
 from .models import Student, Homework, Exam, ClassInteraction, StudyBehavior
 
 
+def index(request):
+    """班级表现主页视图"""
+    return render(request, 'class_performance/index.html', {
+        'title': '班级表现分析'
+    })
+
+
 def calculate_performance_score(student):
     # 权重分配（可调整）
     weights = {
