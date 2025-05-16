@@ -25,6 +25,8 @@ urlpatterns = [
     path('app01/', include('app01.urls')),
     path('class_performance/', include('class_performance.urls')),
     path('class_management/', include('class_management.urls', namespace='class_management')),
-    path('class_interaction/', include('class_interaction.urls')),
+
+    path('user_management/', include('user_management.urls')),
+    path('task_assignment/', include('task_assignment.urls')),
 ]
     # 其他路由...

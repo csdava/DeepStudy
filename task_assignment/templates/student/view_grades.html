@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>View Grades</h2>
+<ul>
+    {% for submission in submissions %}
+        <li>
+            <p>Task: {{ submission.assignment.task.title }}</p>
+            <p>Grade: {{ submission.grade }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

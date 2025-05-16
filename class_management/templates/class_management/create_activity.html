@@ -1,0 +1,53 @@
+{% extends 'class_management/base.html' %}
+
+{% block title %}创建活动 - {{ class_info.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">创建活动 - {{ class_info.name }}</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">活动名称</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="time" class="form-label">活动时间</label>
+                        <input type="datetime-local" class="form-control" id="time" name="time" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location" class="form-label">活动地点</label>
+                        <input type="text" class="form-control" id="location" name="location" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">参与学生</label>
+                        <div class="card">
+                            <div class="card-body" style="max-height: 200px; overflow-y: auto;">
+                                {% for student in students %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="participants" value="{{ student.id }}" id="student_{{ student.id }}">
+                                    <label class="form-check-label" for="student_{{ student.id }}">
+                                        {{ student.name }} ({{ student.student_id }})
+                                    </label>
+                                </div>
+                                {% empty %}
+                                <p class="text-muted">暂无学生可选择</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">创建活动</button>
+                        <a href="{% url 'class_management:activity_list' class_info.id %}" class="btn btn-secondary">返回</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

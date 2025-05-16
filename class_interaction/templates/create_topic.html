@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}创建讨论主题{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title mb-0">创建新的讨论主题</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ form.name.id_for_label }}" class="form-label">主题名称</label>
+                        {{ form.name.errors }}
+                        <input type="text" class="form-control" id="{{ form.name.id_for_label }}" name="{{ form.name.name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">主题描述</label>
+                        {{ form.description.errors }}
+                        <textarea class="form-control" id="{{ form.description.id_for_label }}" name="{{ form.description.name }}" rows="4" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.scope.id_for_label }}" class="form-label">讨论范围</label>
+                        {{ form.scope.errors }}
+                        <select class="form-select" id="{{ form.scope.id_for_label }}" name="{{ form.scope.name }}" required>
+                            <option value="">请选择讨论范围</option>
+                            <option value="班级">班级</option>
+                            <option value="小组">小组</option>
+                        </select>
+                    </div>
+                    <div class="text-end">
+                        <a href="{% url 'discussion_topics' %}" class="btn btn-outline-secondary me-2">取消</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 创建主题
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

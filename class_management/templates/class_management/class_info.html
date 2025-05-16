@@ -1,0 +1,59 @@
+{% extends 'class_management/base.html' %}
+
+{% block title %}班级列表{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col">
+        <h2>班级列表</h2>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for class in classes %}
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ class.name }}</h5>
+                <p class="card-text">
+                    <strong>年级：</strong>{{ class.grade }}<br>
+                    <strong>学科：</strong>{{ class.subject }}<br>
+                    <strong>学生人数：</strong>{{ class.students.count }} 名<br>
+                    <strong>活动数量：</strong>{{ class.activities.count }} 个
+                </p>
+            </div>
+            <div class="card-footer bg-transparent">
+                <div class="d-grid gap-2">
+                    <div class="btn-group">
+                        <a href="{% url 'class_management:student_list' class.id %}" class="btn btn-info">
+                            <i class="bi bi-people"></i> 学生名单
+                        </a>
+                        <a href="{% url 'class_management:activity_list' class.id %}" class="btn btn-success">
+                            <i class="bi bi-calendar-event"></i> 活动管理
+                        </a>
+                        <a href="{% url 'class_management:permission_settings' class.id %}" class="btn btn-warning">
+                            <i class="bi bi-gear"></i> 权限设置
+                        </a>
+                    </div>
+                    <div class="btn-group">
+                        <a href="{% url 'class_management:edit_class' class.id %}" class="btn btn-secondary">
+                            <i class="bi bi-pencil"></i> 编辑
+                        </a>
+                        <a href="{% url 'class_management:delete_class' class.id %}" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> 删除
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            <h4 class="alert-heading">还没有创建任何班级</h4>
+            <p class="mb-0">点击右上角的"创建新班级"按钮开始创建班级。</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %} 
