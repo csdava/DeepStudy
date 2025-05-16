@@ -1,2 +1,4 @@
 *.pyc
 __pycache__
+/learning_path_recommendation/urls.py
+/learning_path_recommendation/templates 1/
