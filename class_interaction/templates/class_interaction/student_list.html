@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ class_group.name }} - 学生互动统计{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>{{ class_group.name }} - 学生互动统计</h2>
+        <p class="text-muted">按互动次数排序</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">学生互动详情</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>排名</th>
+                                <th>学号</th>
+                                <th>学生姓名</th>
+                                <th>发帖数</th>
+                                <th>回复数</th>
+                                <th>总互动</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stat in student_stats %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ stat.student.student_id }}</td>
+                                <td>{{ stat.student.name }}</td>
+                                <td>{{ stat.post_count }}</td>
+                                <td>{{ stat.reply_count }}</td>
+                                <td>
+                                    <span class="badge bg-primary">{{ stat.total_interactions }}</span>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center">暂无学生数据</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">互动统计图表</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="interactionChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('interactionChart').getContext('2d');
+    const data = {
+        labels: [{% for stat in student_stats %}'{{ stat.student.name }}',{% endfor %}],
+        datasets: [{
+            label: '总互动次数',
+            data: [{% for stat in student_stats %}{{ stat.total_interactions }},{% endfor %}],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    };
+    new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: '互动次数'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %} 
