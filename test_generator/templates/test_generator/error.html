@@ -1,0 +1,30 @@
+{% extends "test_generator/base.html" %}
+
+{% block title %}错误 - {{ error_message }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2 class="card-title text-danger mb-4">
+                        <i class="bi bi-exclamation-triangle"></i> 出错了
+                    </h2>
+                    <p class="card-text">{{ error_message }}</p>
+                    {% if raw_response %}
+                    <div class="mt-4">
+                        <h5>详细信息：</h5>
+                        <pre class="bg-light p-3 text-start"><code>{{ raw_response }}</code></pre>
+                    </div>
+                    {% endif %}
+                    <div class="mt-4">
+                        <a href="{% url 'test_generator_index' %}" class="btn btn-primary">返回首页</a>
+                        <a href="{% url 'generate_test' %}" class="btn btn-outline-primary">重新生成</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
