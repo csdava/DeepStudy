@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
-import assignment_difficulty, lesson_plan_generator, class_performance, class_management, task_assignment, resource_library, class_interaction, learning_path_recommendation, mistake_diagnosis, test_generator, learning_report, resource_library, task_assignment, class_interaction, user_management, authentication
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
