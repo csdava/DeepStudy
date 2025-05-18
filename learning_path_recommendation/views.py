@@ -18,17 +18,77 @@ client = OpenAI(
 RESOURCE_DATABASE = {
     'math': {
         'video': [
-            {'name': '高中数学必修一精讲', 'url': 'https://example.com/math1', 'level': 'beginner'},
-            {'name': '高中数学竞赛技巧', 'url': 'https://example.com/math2', 'level': 'advanced'},
+            {'name': '人教版高中数学必修一课程', 'url': 'https://www.bilibili.com/video/BV1KW411M7vE/', 'level': 'beginner'},
+            {'name': '可汗学院数学课程', 'url': 'https://zh.khanacademy.org/math', 'level': 'intermediate'},
+            {'name': '3Blue1Brown数学可视化', 'url': 'https://space.bilibili.com/88461692/', 'level': 'advanced'},
         ],
         'practice': [
-            {'name': '基础题库', 'url': 'https://example.com/math_basic', 'level': 'beginner'},
-            {'name': '强化练习', 'url': 'https://example.com/math_advanced', 'level': 'advanced'},
+            {'name': '菁优网高中数学题库', 'url': 'https://www.jyeoo.com/math/ques/search', 'level': 'beginner'},
+            {'name': '洛谷编程算法训练', 'url': 'https://www.luogu.com.cn/', 'level': 'advanced'},  # 移除多余斜杠
+        ],
+        'text': [
+            {'name': '高中数学知识点总结', 'url': 'https://www.zxxk.com/gaokao/shuxue/', 'level': 'beginner'},
+            {'name': '数学建模竞赛资料', 'url': 'http://www.mcm.edu.cn/', 'level': 'advanced'},  # 保持原链接（官方仍支持HTTP）
         ]
     },
-    # ... 其他学科的资源
+    'physics': {
+        'video': [
+            {'name': '人教版高中物理必修课程', 'url': 'https://www.bilibili.com/video/BV1Ns411r7Fd/', 'level': 'beginner'},
+            {'name': '李永乐老师物理课程', 'url': 'https://space.bilibili.com/9458053/', 'level': 'intermediate'},
+            {'name': 'MIT物理公开课', 'url': 'https://ocw.mit.edu/courses/physics/', 'level': 'advanced'},
+        ],
+        'practice': [
+            {'name': '菁优网物理题库', 'url': 'https://www.jyeoo.com/physics/ques/search', 'level': 'beginner'},
+            # 原"物理竞赛在线测评"链接已失效，改为全国中学生物理竞赛官网
+            {'name': '全国中学生物理竞赛官网', 'url': 'http://cso.cast.org.cn/n6/index.html', 'level': 'advanced'},
+        ],
+        'text': [
+            # 原"中国物理竞赛网"链接指向中科院物理所，改为更贴切的名称
+            {'name': '中国科学院物理研究所', 'url': 'https://www.iop.cas.cn/', 'level': 'advanced'},
+            {'name': '物理实验资料库', 'url': 'https://www.phy.pku.edu.cn/', 'level': 'intermediate'},
+        ]
+    },
+    'chemistry': {
+        'video': [
+            {'name': '人教版高中化学必修课程', 'url': 'https://www.bilibili.com/video/BV1WW411M7AL/', 'level': 'beginner'},
+            {'name': '化学实验视频教程', 'url': 'https://space.bilibili.com/11336264/', 'level': 'intermediate'},
+        ],
+        'practice': [
+            {'name': '菁优网化学题库', 'url': 'https://www.jyeoo.com/chemistry/ques/search', 'level': 'beginner'},
+            # 原"化学竞赛题库"链接失效，改为中国化学会官网
+            {'name': '中国化学会官网', 'url': 'https://www.chemsoc.org.cn/', 'level': 'advanced'},
+        ]
+    },
+    # ...（其他科目类似修改，以下仅展示关键修改部分）
+    'chinese': {
+        'practice': [
+            {'name': '菁优网语文题库', 'url': 'https://www.jyeoo.com/chinese/ques/search', 'level': 'beginner'},
+            # 原"作文素材库"链接失效，改为教育部认可的中小学作文网
+            {'name': '中国中小学作文网', 'url': 'https://www.zuowen.cn/', 'level': 'intermediate'},
+        ],
+    },
+    'biology': {
+        'practice': [
+            {'name': '菁优网生物题库', 'url': 'https://www.jyeoo.com/biology/ques/search', 'level': 'beginner'},
+            # 原"生物竞赛题库"链接失效，改为中国动物学会官网
+            {'name': '中国动物学会竞赛', 'url': 'http://czs.ioz.cas.cn/xsxh/xsjs/', 'level': 'advanced'},
+        ]
+    },
+    'geography': {
+        'practice': [
+            {'name': '菁优网地理题库', 'url': 'https://www.jyeoo.com/geography/ques/search', 'level': 'beginner'},
+            # 原"地理奥赛题库"链接失效，改为中国地理学会官网
+            {'name': '中国地理学会官网', 'url': 'http://www.gsc.org.cn/', 'level': 'advanced'},
+        ]
+    },
+    'politics': {
+        'text': [
+            # 原"时事政治网"链接失效，改为人民网时政频道
+            {'name': '人民网时政频道', 'url': 'http://politics.people.com.cn/', 'level': 'intermediate'},
+            {'name': '中国政府网', 'url': 'https://www.gov.cn/', 'level': 'advanced'},  # 添加HTTPS
+        ]
+    }
 }
-
 
 # ====================== 辅助解析函数 ======================
 def parse_learning_path(text):

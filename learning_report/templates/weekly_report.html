@@ -1,0 +1,35 @@
+{% extends "report/base.html" %}
+
+{% block content %}
+<div class="report-container">
+  <!-- 学习时长图表 -->
+  <div class="chart-card">
+    <h3>学习时长分布</h3>
+    <canvas id="studyDurationChart"></canvas>
+  </div>
+
+  <!-- AI建议 -->
+  <div class="advice-section">
+    <h2>学习建议</h2>
+    <div class="advice-content">{{ advice|safe }}</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // 初始化图表
+  const chartData = JSON.parse('{{ chart_data|escapejs }}');
+  
+  new Chart(document.getElementById('studyDurationChart'), {
+    type: 'bar',
+    data: {
+      labels: chartData.study_duration.labels,
+      datasets: [{
+        label: '每日学习时长（分钟）',
+        data: chartData.study_duration.data,
+        backgroundColor: 'rgba(54, 162, 235, 0.5)'
+      }]
+    }
+  });
+</script>
+{% endblock %}

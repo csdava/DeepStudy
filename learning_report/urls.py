@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # 将 diagnosis/ 的路由定义放在前面
-    path('diagnosis/', views.mistake_diagnosis, name='mistake_diagnosis'),  # 实际路径为 report/diagnosis/
-    path('', views.report_home, name='report_home'),  # 实际路径为 report/
+    path('', views.view_report_list, name='report_list'),
+    path('generate/', views.generate_weekly_report, name='generate_report'),
+    path('generate/<str:date>/', views.generate_weekly_report, name='generate_report_date'),
+    path('detail/<int:report_id>/', views.view_report_detail, name='report_detail'),
 ]
