@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- 版本控制 -->
+    <div class="version-control mb-4">
+        {% if lesson.previous_version %}
+        <a href="{% url 'lesson_detail' lesson.previous_version.pk %}" 
+           class="btn btn-outline-secondary btn-sm">
+            ← 上一版本 (v{{ lesson.previous_version.version }})
+        </a>
+        {% endif %}
+        <span class="badge bg-primary">当前版本 v{{ lesson.version }}</span>
+    </div>
+
+    <!-- 教案主体 -->
+    <div class="row">
+        <!-- 正文 -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>教案正文</h4>
+                </div>
+                <div class="card-body">
+                    <div id="editor" data-content="{{ content.教案正文|escapejs }}"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 侧边栏 -->
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header">教学资源</div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% if lesson.materials_needed.ppt %}
+                        <li class="list-group-item">
+                            <a href="#" class="btn-download" data-type="ppt">
+                                <i class="bi bi-file-ppt"></i> 下载PPT
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="list-group-item">
+                            <a href="#" class="btn-download" data-type="word">
+                                <i class="bi bi-file-word"></i> 下载Word
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 分享面板 -->
+            <div class="card">
+                <div class="card-header">分享到班级</div>
+                <div class="card-body">
+                    <form action="{% url 'share_lesson' lesson.pk %}" method="post">
+                        {% csrf_token %}
+                        <select class="form-select" name="class_id">
+                            {% for class in request.user.teacher_classes %}
+                            <option value="{{ class.id }}">{{ class.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-success mt-2">
+                            <i class="bi bi-share"></i> 分享
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

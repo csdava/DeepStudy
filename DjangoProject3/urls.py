@@ -15,6 +15,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.urls import include, path
+from django.shortcuts import redirect
+from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
+
+def redirect_to_testgen(request):
+    return redirect('test_generator_index')
 from django.urls import path, include
 from app01 import views
 
@@ -32,8 +40,8 @@ urlpatterns = [
     path('report/diagnosis/', include('learning_report.urls')),
     path('testgen/', include('test_generator.urls')),  # 注意结尾斜杠
     path('assignment/', include('assignment_difficulty.urls')),  # 添加作业难度分析模块的URLs
-]
-# urls.py
+    path('lessons/', include('lesson_plan_generator.urls')),  # 添加教案生成器的URLs
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # 添加media文件服务
 
     path('user_management/', include('user_management.urls')),
     path('task_assignment/', include('task_assignment.urls')),
