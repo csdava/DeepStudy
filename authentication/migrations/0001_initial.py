@@ -12,13 +12,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='LearningPath',
+            name='LoginHistory',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('recommended_path', models.JSONField(verbose_name='推荐路径')),
-                ('generated_at', models.DateTimeField(auto_now_add=True)),
-                ('effectiveness', models.FloatField(null=True, verbose_name='路径有效性评分')),
-                ('adjustment_history', models.JSONField(default=list, verbose_name='调整记录')),
+                ('login_time', models.DateTimeField(auto_now_add=True)),
+                ('ip_address', models.GenericIPAddressField()),
+                ('device_info', models.CharField(max_length=200)),
             ],
         ),
     ]
