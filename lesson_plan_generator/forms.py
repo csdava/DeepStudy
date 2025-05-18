@@ -9,6 +9,19 @@ class LessonPlanForm(forms.ModelForm):
         ('homework', '作业建议'),
     ]
 
+    DURATION_CHOICES = [
+        ('40分钟', '40分钟'),
+        ('45分钟', '45分钟'),
+        ('50分钟', '50分钟'),
+        ('80分钟', '80分钟（双课时）'),
+        ('1课时', '1课时'),
+        ('1.5课时', '1.5课时'),
+        ('2课时', '2课时'),
+        ('3课时', '3课时'),
+        ('4课时', '4课时'),
+        ('custom', '自定义'),
+    ]
+
     materials = forms.MultipleChoiceField(
         label='课件需求',
         choices=MATERIAL_CHOICES,
@@ -17,17 +30,35 @@ class LessonPlanForm(forms.ModelForm):
         help_text='选择需要生成的课件类型'
     )
 
+    duration = forms.ChoiceField(
+        label='课时',
+        choices=DURATION_CHOICES,
+        initial='45分钟',
+        widget=forms.Select(attrs={'class': 'form-select duration-select'}),
+        help_text='选择预设课时或选择"自定义"输入其他时长'
+    )
+
+    custom_duration = forms.CharField(
+        label='自定义课时',
+        required=False,
+        max_length=50,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control custom-duration',
+            'placeholder': '例如：60分钟、2.5课时等',
+            'style': 'display: none;'
+        })
+    )
+
     class Meta:
         model = LessonPlan
         fields = [
-            'subject', 'grade', 'duration', 'objectives',
-            'key_points', 'difficulties', 'materials',
-            'teaching_style', 'student_profile'
+            'subject', 'grade', 'duration',
+            'objectives', 'key_points', 'difficulties',
+            'materials', 'teaching_style', 'student_profile'
         ]
         labels = {
             'subject': '学科',
             'grade': '年级',
-            'duration': '课时',
             'objectives': '教学目标',
             'key_points': '重点内容',
             'difficulties': '教学难点',
@@ -43,13 +74,6 @@ class LessonPlanForm(forms.ModelForm):
         widgets = {
             'subject': forms.Select(attrs={'class': 'form-select'}),
             'grade': forms.Select(attrs={'class': 'form-select'}),
-            'duration': forms.Select(
-                attrs={'class': 'form-select'},
-                choices=[
-                    ('40', '40分钟'),
-                    ('80', '双课时（80分钟）')
-                ]
-            ),
             'teaching_style': forms.Select(attrs={'class': 'form-select'}),
             'key_points': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -72,12 +96,38 @@ class LessonPlanForm(forms.ModelForm):
             })
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        duration_choice = cleaned_data.get('duration')
+        custom_duration = cleaned_data.get('custom_duration')
+
+        if duration_choice == 'custom' and not custom_duration:
+            raise forms.ValidationError({
+                'custom_duration': '选择自定义课时时，必须填写具体时长'
+            })
+
+        if duration_choice == 'custom':
+            cleaned_data['duration'] = custom_duration
+
+        return cleaned_data
+
     def save(self, commit=True):
         instance = super().save(commit=False)
+        # 保存课时
+        if self.cleaned_data.get('duration') == 'custom':
+            instance.duration = self.cleaned_data.get('custom_duration')
+        else:
+            instance.duration = self.cleaned_data.get('duration')
+            
+        # 保存材料需求
         instance.materials_needed = {
             item: (item in self.cleaned_data['materials'])
             for item in dict(self.MATERIAL_CHOICES)
         }
+        
         if commit:
             instance.save()
         return instance
+
+    class Media:
+        js = ('js/lesson_plan_form.js',)
