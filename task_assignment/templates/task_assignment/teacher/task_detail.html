@@ -1,0 +1,76 @@
+{% extends 'task_assignment/base.html' %}
+
+{% block title %}任务详情 - {{ task.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col">
+            <h2>{{ task.title }}</h2>
+        </div>
+        <div class="col text-end">
+            <a href="{% url 'task_assign' task.id %}" class="btn btn-success">分配任务</a>
+            <a href="{% url 'task_list' %}" class="btn btn-secondary">返回列表</a>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">任务信息</h5>
+            <div class="row">
+                <div class="col-md-8">
+                    <p><strong>描述：</strong>{{ task.description }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>创建者：</strong>{{ task.created_by.username }}</p>
+                    <p><strong>创建时间：</strong>{{ task.created_at|date:"Y-m-d H:i" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">任务分配情况</h5>
+            {% if assignments %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>分配对象</th>
+                                <th>评分标准</th>
+                                <th>权重</th>
+                                <th>附件</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for assignment in assignments %}
+                                <tr>
+                                    <td>
+                                        {% for user in assignment.assigned_to.all %}
+                                            <span class="badge bg-primary">{{ user.username }}</span>
+                                        {% endfor %}
+                                    </td>
+                                    <td>{{ assignment.grading_criteria }}</td>
+                                    <td>{{ assignment.weight }}</td>
+                                    <td>
+                                        {% if assignment.attachment %}
+                                            <a href="{{ assignment.attachment.url }}" class="btn btn-sm btn-info">下载附件</a>
+                                        {% else %}
+                                            无附件
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    该任务还未分配给任何人。点击右上角的"分配任务"按钮进行分配。
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

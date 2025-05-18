@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>任务列表</title>
+</head>
+<body>
+    <h1>任务列表</h1>
+    <a href="{% url 'task_create' %}">创建任务</a>
+    <ul>
+        {% for task in tasks %}
+            <li><a href="{% url 'task_detail' task.id %}">{{ task.name }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

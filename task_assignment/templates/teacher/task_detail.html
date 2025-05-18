@@ -1,0 +1,18 @@
+              <!DOCTYPE html>
+<html>
+<head>
+    <title>任务详情</title>
+</head>
+<body>
+    <h1>{{ task.name }}</h1>
+    <p>{{ task.description }}</p>
+    <p>截止日期：{{ task.due_date }}</p>
+    <p>任务类型：{{ task.task_type }}</p>
+    <a href="{% url 'task_assign' task.id %}">分配任务</a>
+    <ul>
+        {% for assignment in assignments %}
+            <li>{{ assignment.assigned_to.all }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

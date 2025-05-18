@@ -1,78 +1,104 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from .models import Task, Assignment, Submission
-from .forms import TaskForm, AssignmentForm, SubmissionForm
+from django.contrib import messages
+from django.core.exceptions import PermissionDenied
+from .models import Task, TaskAssignment, TaskSubmission
+from .forms import TaskForm, TaskAssignmentForm, TaskSubmissionForm
+from django.contrib.auth.models import User
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'task_assignment/index.html')
 
-# Teacher Views
 @login_required
-def create_task(request):
+def task_list(request):
+    if not request.user.is_staff:
+        messages.error(request, '您没有权限访问此页面')
+        return redirect('task_index')
+    
+    tasks = Task.objects.raw('''
+        SELECT id, title, description, created_at, created_by_id 
+        FROM task_assignment_task 
+        WHERE created_by_id = %s 
+        ORDER BY created_at DESC
+    ''', [request.user.id])
+    return render(request, 'task_assignment/teacher/task_list.html', {'tasks': tasks})
+
+@login_required
+def task_detail(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    if not request.user.is_staff and not TaskAssignment.objects.filter(task=task, assigned_to=request.user).exists():
+        messages.error(request, '您没有权限查看此任务')
+        return redirect('task_index')
+    
+    if request.user.is_staff:
+        assignments = TaskAssignment.objects.filter(task=task)
+    else:
+        assignments = TaskAssignment.objects.filter(task=task, assigned_to=request.user)
+    return render(request, 'task_assignment/teacher/task_detail.html', {'task': task, 'assignments': assignments})
+
+@login_required
+def task_create(request):
+    if not request.user.is_staff:
+        messages.error(request, '您没有权限创建任务')
+        return redirect('task_index')
+    
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
             task.created_by = request.user
             task.save()
-            return redirect('task_assignment:assign_task', task_id=task.id)
+            messages.success(request, '任务创建成功！')
+            return redirect('task_list')
     else:
         form = TaskForm()
-    return render(request, 'teacher/create_task.html', {'form': form})
+    return render(request, 'task_assignment/teacher/task_create.html', {'form': form})
 
 @login_required
-def assign_task(request, task_id):
+def task_assign(request, task_id):
     task = get_object_or_404(Task, id=task_id)
+    if not request.user.is_staff or task.created_by != request.user:
+        messages.error(request, '您没有权限分配此任务')
+        return redirect('task_index')
+    
     if request.method == 'POST':
-        form = AssignmentForm(request.POST)
+        form = TaskAssignmentForm(request.POST, request.FILES)
         if form.is_valid():
             assignment = form.save(commit=False)
             assignment.task = task
             assignment.save()
-            return redirect('task_assignment:view_submissions', task_id=task.id)
+            form.save_m2m()
+            messages.success(request, '任务分配成功！')
+            return redirect('task_detail', task_id=task.id)
     else:
-        form = AssignmentForm()
-    return render(request, 'teacher/assign_task.html', {'form': form, 'task': task})
+        form = TaskAssignmentForm()
+    return render(request, 'task_assignment/teacher/task_assign.html', {'form': form, 'task': task})
 
 @login_required
-def grade_task(request, submission_id):
-    submission = get_object_or_404(Submission, id=submission_id)
+def task_submit(request, assignment_id):
+    assignment = get_object_or_404(TaskAssignment, id=assignment_id)
+    if not assignment.assigned_to.filter(id=request.user.id).exists():
+        messages.error(request, '您没有权限提交此任务')
+        return redirect('task_index')
+    
     if request.method == 'POST':
-        grade = request.POST.get('grade')
-        submission.grade = float(grade)
-        submission.save()
-        return redirect('task_assignment:view_submissions', task_id=submission.assignment.task.id)
-    return render(request, 'teacher/grade_task.html', {'submission': submission})
-
-@login_required
-def view_submissions(request, task_id):
-    task = get_object_or_404(Task, id=task_id)
-    submissions = task.assignments.all()
-    return render(request, 'teacher/view_submissions.html', {'task': task, 'submissions': submissions})
-
-# Student Views
-@login_required
-def view_tasks(request):
-    assignments = request.user.assigned_tasks.all()
-    return render(request, 'student/view_tasks.html', {'assignments': assignments})
-
-@login_required
-def submit_task(request, assignment_id):
-    assignment = get_object_or_404(Assignment, id=assignment_id)
-    if request.method == 'POST':
-        form = SubmissionForm(request.POST)
+        form = TaskSubmissionForm(request.POST, request.FILES)
         if form.is_valid():
             submission = form.save(commit=False)
-            submission.assignment = assignment
+            submission.task_assignment = assignment
             submission.submitted_by = request.user
             submission.save()
-            return redirect('task_assignment:view_tasks')
+            messages.success(request, '任务提交成功！')
+            return redirect('student_task_list')
     else:
-        form = SubmissionForm()
-    return render(request, 'student/submit_task.html', {'form': form, 'assignment': assignment})
+        form = TaskSubmissionForm()
+    return render(request, 'task_assignment/student/task_submit.html', {'form': form, 'assignment': assignment})
 
 @login_required
-def view_grades(request):
-    submissions = request.user.submissions.all()
-    return render(request, 'student/view_grades.html', {'submissions': submissions})
+def student_task_list(request):
+    if request.user.is_staff:
+        messages.error(request, '教师不能访问学生任务列表')
+        return redirect('task_list')
+    
+    assignments = TaskAssignment.objects.filter(assigned_to=request.user)
+    return render(request, 'task_assignment/student/task_list.html', {'assignments': assignments})

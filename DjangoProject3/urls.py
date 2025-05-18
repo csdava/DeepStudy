@@ -23,7 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),  # 添加认证URL
     path('app01/', include('app01.urls')),
-    path('class_performance/', include('class_performance.urls')),
     path('class_management/', include('class_management.urls', namespace='class_management')),
 
     path('user_management/', include('user_management.urls')),

@@ -1,0 +1,29 @@
+{% extends 'user_management/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>用户管理</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>用户名</th>
+                <th>邮箱</th>
+                <th>最后登录</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.last_login|date:"Y-m-d H:i" }}</td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-primary">编辑</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %} 
