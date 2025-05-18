@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'resource_library',
     'class_interaction',
     'learning_path_recommendation',
-    'mistake_diagnosis',
     'test_generator',
     'learning_report',
     'user_management',
@@ -98,7 +97,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ds',
         'USER': '2024',
-        'PASSWORD': 'Hainnu@109',
+        'PASSWORD': 'Hainnu@109',  # 请修改为您的本地MySQL密码
         'HOST': '10.131.7.99',
         'PORT': '43306',
         'OPTIONS': {'charset': 'utf8mb4'}
