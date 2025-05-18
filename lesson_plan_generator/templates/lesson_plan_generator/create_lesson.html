@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}创建教案{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">创建新教案</h2>
+                    
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">
+                                {{ field.label }}
+                                {% if field.field.required %}
+                                <span class="text-danger">*</span>
+                                {% endif %}
+                            </label>
+                            {% if field.name == 'materials' %}
+                            <div class="materials-checkboxes">
+                                {% for checkbox in field %}
+                                <div class="form-check">
+                                    {{ checkbox.tag }}
+                                    <label class="form-check-label" for="{{ checkbox.id_for_label }}">
+                                        {{ checkbox.choice_label }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="form-group">
+                                {{ field }}
+                            </div>
+                            {% endif %}
+                            {% if field.help_text %}
+                            <div class="form-text text-muted">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% if field.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in field.errors %}
+                                {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-lightning-charge"></i> 生成教案
+                            </button>
+                            <a href="{% url 'lesson_list' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> 返回列表
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.materials-checkboxes {
+    margin-top: 0.5rem;
+}
+.materials-checkboxes .form-check {
+    margin-bottom: 0.5rem;
+}
+.materials-checkboxes .form-check-label {
+    margin-left: 0.5rem;
+}
+</style>
+
+{% block extra_js %}
+<script>
+// 表单验证
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
+
+// 添加 Bootstrap 类到表单字段
+document.addEventListener('DOMContentLoaded', function() {
+    var inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea, select');
+    inputs.forEach(function(input) {
+        input.classList.add('form-control');
+    });
+});
+</script>
+{% endblock %}
+{% endblock %} 
