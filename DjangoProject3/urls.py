@@ -27,5 +27,6 @@ urlpatterns = [
 
     path('user_management/', include('user_management.urls')),
     path('task_assignment/', include('task_assignment.urls')),
+    path('class_performance/', include('class_performance.urls')),
 ]
     # 其他路由...

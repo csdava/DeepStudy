@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report</title>
+</head>
+<body>
+    <h1>Class Performance Report</h1>
+    <h2>Top Students</h2>
+    <ul>
+        {% for student, score in top_students %}
+        <li>{{ student.name }}: {{ score }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Bottom Students</h2>
+    <ul>
+        {% for student, score in bottom_students %}
+        <li>{{ student.name }}: {{ score }}</li>
+        {% endfor %}
+    </ul>
+    <p>Average Score: {{ average_score }}</p>
+    <a href="{% url 'index' %}">Back to Ranking</a>
+    <a href="{% url 'charts' %}">View Charts</a>
+</body>
+</html>
