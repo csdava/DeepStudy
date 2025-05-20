@@ -1,19 +1,26 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from openai import OpenAI
 from .models import DifficultyAnalysis
 from .forms import DifficultyOptimizationForm
 import json
 import uuid
 import os
+from django.contrib import messages
 
 client = OpenAI(
     api_key=os.getenv('DEEPSEEK_API_KEY', 'sk-bc14211e98e3444e96b04c818666e128'),  # 从环境变量获取
     base_url="https://api.deepseek.com"
 )
 
-
+@login_required
 def analyze_difficulty(request):
+    # 检查用户是否是教师
+    if not hasattr(request.user, 'userprofile') or request.user.userprofile.role != 'teacher':
+        messages.error(request, '只有教师可以使用作业难度分析功能')
+        return redirect('teacher_dashboard')
+
     if request.method == 'POST':
         form = DifficultyOptimizationForm(request.POST)
         if form.is_valid():
@@ -147,7 +154,13 @@ def analyze_difficulty(request):
 
     return render(request, 'assignment_difficulty/analysis_form.html', {'form': form})
 
+@login_required
 def analysis_result(request, analysis_id):
+    # 检查用户是否是教师
+    if not hasattr(request.user, 'userprofile') or request.user.userprofile.role != 'teacher':
+        messages.error(request, '只有教师可以查看作业难度分析结果')
+        return redirect('teacher_dashboard')
+
     try:
         analysis = DifficultyAnalysis.objects.get(id=analysis_id)
         context = {

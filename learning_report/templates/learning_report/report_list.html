@@ -9,7 +9,7 @@
             <h2>学习周报列表</h2>
         </div>
         <div class="col-auto">
-            <a href="{% url 'generate_report' %}" class="btn btn-primary">
+            <a href="{% url 'learning_report:generate_report' %}" class="btn btn-primary">
                 生成本周报告
             </a>
         </div>
@@ -18,7 +18,7 @@
     {% if reports %}
     <div class="list-group">
         {% for report in reports %}
-        <a href="{% url 'report_detail' report.id %}" class="list-group-item list-group-item-action">
+        <a href="{% url 'learning_report:report_detail' report.id %}" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">第{{ report.week|slice:"4:" }}周学习报告</h5>
                 <small>{{ report.created_at|date:"Y-m-d H:i" }}</small>

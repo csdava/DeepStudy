@@ -205,8 +205,8 @@ def generate_weekly_report(request):
         ).values('resource_type').annotate(count=models.Count('id'))
         
         # 5.3 作业提交记录
-        from task_assignment.models import Submission
-        submissions = Submission.objects.filter(
+        from task_assignment.models import TaskSubmission
+        submissions = TaskSubmission.objects.filter(
             submitted_at__range=[start_date, end_date]
         )
         
@@ -242,7 +242,7 @@ def generate_weekly_report(request):
                     'wrong_questions': test.wrong_questions,
                     'knowledge_points': test.knowledge_points,
                     'mistake_count': len([m for m in mistake_records if m.analysis_result.get('subject') == test.subject]),
-                    'submission_count': len([s for s in submissions if s.assignment.target_class.subject == test.subject])
+                    'submission_count': len([s for s in submissions if s.task_assignment.task.title.startswith(test.subject)])
                 }
                 # 从测试记录中提取知识点掌握情况
                 knowledge_mastery[test.subject] = test.knowledge_points
