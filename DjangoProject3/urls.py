@@ -20,31 +20,37 @@ from django.shortcuts import redirect
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
+from user_management import views as user_views
 
 def redirect_to_testgen(request):
     return redirect('test_generator_index')
-from django.urls import path, include
-from app01 import views
 
 urlpatterns = [
-    path('', views.index, name='home'),  # Add root URL pattern
+    path('', user_views.role_selection, name='role_selection'),  # 新的首页为身份选择
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),  # 添加认证URL
-    path('app01/', include('app01.urls')),
-    path('class_management/', include('class_management.urls', namespace='class_management')),
-    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='test_generator_index'), name='logout'),
-    path('app01/', include('app01.urls')),  # 使用非空路径前缀
-    path('learning-path/', include('learning_path_recommendation.urls')),
-    path('report/', include('learning_report.urls')),
-    path('report/diagnosis/', include('learning_report.urls')),
-    path('testgen/', include('test_generator.urls')),  # 注意结尾斜杠
-    path('assignment/', include('assignment_difficulty.urls')),  # 添加作业难度分析模块的URLs
-    path('lessons/', include('lesson_plan_generator.urls')),  # 添加教案生成器的URLs
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # 添加media文件服务
-
-    path('user_management/', include('user_management.urls')),
-    path('task_assignment/', include('task_assignment.urls')),
+    
+    # 身份登录和注册相关
+    path('teacher/login/', user_views.teacher_login, name='teacher_login'),
+    path('student/login/', user_views.student_login, name='student_login'),
+    path('teacher/register/', user_views.teacher_register, name='teacher_register'),
+    path('student/register/', user_views.student_register, name='student_register'),
+    path('teacher/dashboard/', user_views.teacher_dashboard, name='teacher_dashboard'),
+    path('student/dashboard/', user_views.student_dashboard, name='student_dashboard'),
+    path('logout/', user_views.user_logout, name='logout'),  # 使用自定义的登出视图
+    
+    # 教师功能模块
     path('class_performance/', include('class_performance.urls')),
-]
-    # 其他路由...
+    path('lessons/', include('lesson_plan_generator.urls')),
+    path('class_management/', include('class_management.urls', namespace='class_management')),
+    path('task_assignment/', include('task_assignment.urls')),
+    path('assignment/', include('assignment_difficulty.urls')),
+    
+    # 学生功能模块
+    path('testgen/', include('test_generator.urls')),
+    path('report/', include('learning_report.urls', namespace='learning_report')),
+    path('diagnosis/', include('mistake_diagnosis.urls', namespace='mistake_diagnosis')),
+    path('learning-path/', include('learning_path_recommendation.urls', namespace='learning_path')),
+    
+    # 用户管理
+    path('user_management/', include('user_management.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # 添加media文件服务
