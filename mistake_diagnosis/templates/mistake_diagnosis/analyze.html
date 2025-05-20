@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}错题诊断 - 分析{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">错题诊断</h2>
+                    
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.subject.id_for_label }}" class="form-label">
+                                    {{ form.subject.label }}
+                                </label>
+                                {{ form.subject }}
+                                {% if form.subject.errors %}
+                                <div class="invalid-feedback">{{ form.subject.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="{{ form.knowledge_point.id_for_label }}" class="form-label">
+                                    {{ form.knowledge_point.label }}
+                                </label>
+                                {{ form.knowledge_point }}
+                                {% if form.knowledge_point.errors %}
+                                <div class="invalid-feedback">{{ form.knowledge_point.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.question_text.id_for_label }}" class="form-label">
+                                {{ form.question_text.label }}
+                            </label>
+                            {{ form.question_text }}
+                            {% if form.question_text.errors %}
+                            <div class="invalid-feedback">{{ form.question_text.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.student_answer.id_for_label }}" class="form-label">
+                                {{ form.student_answer.label }}
+                            </label>
+                            {{ form.student_answer }}
+                            {% if form.student_answer.errors %}
+                            <div class="invalid-feedback">{{ form.student_answer.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.self_analysis.id_for_label }}" class="form-label">
+                                {{ form.self_analysis.label }}
+                            </label>
+                            {{ form.self_analysis }}
+                            {% if form.self_analysis.errors %}
+                            <div class="invalid-feedback">{{ form.self_analysis.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">开始诊断</button>
+                            <a href="{% url 'mistake_diagnosis:index' %}" class="btn btn-outline-secondary">返回</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

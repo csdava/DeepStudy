@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}错题诊断{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h1 class="text-center mb-4">错题诊断系统</h1>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">开始诊断</h5>
+                            <p class="card-text">分析错题原因，获取针对性建议</p>
+                            <a href="{% url 'mistake_diagnosis:analyze' %}" class="btn btn-primary">立即诊断</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">历史记录</h5>
+                            <p class="card-text">查看历史诊断记录和进步情况</p>
+                            <a href="{% url 'mistake_diagnosis:history' %}" class="btn btn-outline-primary">查看历史</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">使用说明</h5>
+                    <ol class="card-text">
+                        <li>选择学科和知识点</li>
+                        <li>输入题目内容和你的答案</li>
+                        <li>添加自我分析（可选）</li>
+                        <li>获取AI诊断结果和改进建议</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}教师控制台 - 深度学习助手{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>欢迎回来，{{ user.username }}老师</h1>
+            <p class="lead">这里是您的教学管理控制台</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'logout' %}" class="btn btn-outline-primary">退出登录</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- 班级表现 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="fas fa-chart-line fa-2x mb-3" style="color: #667eea;"></i>
+                    <h5 class="card-title">班级表现</h5>
+                    <p class="card-text">查看学生学习数据和表现分析</p>
+                    <a href="/class_performance/" class="btn btn-primary">进入分析</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 教案生成器 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="fas fa-book fa-2x mb-3" style="color: #667eea;"></i>
+                    <h5 class="card-title">教案生成器</h5>
+                    <p class="card-text">智能生成个性化教学方案</p>
+                    <a href="/lessons/" class="btn btn-primary">生成教案</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 班级管理 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="fas fa-users fa-2x mb-3" style="color: #667eea;"></i>
+                    <h5 class="card-title">班级管理</h5>
+                    <p class="card-text">管理班级、学生和教学活动</p>
+                    <a href="/class_management/" class="btn btn-primary">管理班级</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 任务分配 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="fas fa-tasks fa-2x mb-3" style="color: #667eea;"></i>
+                    <h5 class="card-title">任务分配</h5>
+                    <p class="card-text">分配和管理学习任务</p>
+                    <a href="/task_assignment/" class="btn btn-primary">任务管理</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 作业难度分析 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="fas fa-chart-bar fa-2x mb-3" style="color: #667eea;"></i>
+                    <h5 class="card-title">作业难度分析</h5>
+                    <p class="card-text">分析作业难度和学生掌握程度</p>
+                    <a href="/assignment/" class="btn btn-primary">分析难度</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

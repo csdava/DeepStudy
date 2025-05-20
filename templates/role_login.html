@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}身份选择登录 - 深度学习助手{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="mb-4">欢迎使用深度学习助手</h1>
+            <p class="lead mb-5">请选择您的身份进行登录或注册</p>
+        </div>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card mb-4">
+                <div class="card-body text-center p-5">
+                    <i class="fas fa-chalkboard-teacher fa-4x mb-3" style="color: #667eea;"></i>
+                    <h3 class="card-title">教师入口</h3>
+                    <p class="card-text mb-4">教学管理、课程规划、学生分析</p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'teacher_login' %}" class="btn btn-primary btn-lg">教师登录</a>
+                        <a href="{% url 'teacher_register' %}" class="btn btn-outline-primary btn-lg">教师注册</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-5">
+            <div class="card mb-4">
+                <div class="card-body text-center p-5">
+                    <i class="fas fa-user-graduate fa-4x mb-3" style="color: #764ba2;"></i>
+                    <h3 class="card-title">学生入口</h3>
+                    <p class="card-text mb-4">学习规划、能力提升、知识诊断</p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'student_login' %}" class="btn btn-primary btn-lg">学生登录</a>
+                        <a href="{% url 'student_register' %}" class="btn btn-outline-primary btn-lg">学生注册</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加Font Awesome图标支持 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %} 

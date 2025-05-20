@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}首页 - 深度学习助手{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">欢迎使用深度学习助手</h1>
+    
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">学习报告</h5>
+                    <p class="card-text">查看学习进度和表现分析</p>
+                    <a href="{% url 'learning_report:report_list' %}" class="btn btn-primary">查看报告</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">测试生成</h5>
+                    <p class="card-text">生成个性化测试题目</p>
+                    <a href="{% url 'test_generator_index' %}" class="btn btn-primary">开始测试</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">学习路径</h5>
+                    <p class="card-text">获取个性化学习建议</p>
+                    <a href="{% url 'learning_path:index' %}" class="btn btn-primary">查看路径</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">作业分析</h5>
+                    <p class="card-text">查看作业难度和完成情况</p>
+                    <a href="{% url 'difficulty_analysis' %}" class="btn btn-primary">查看分析</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">教案生成</h5>
+                    <p class="card-text">智能生成个性化教案</p>
+                    <a href="{% url 'lesson_list' %}" class="btn btn-primary">生成教案</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">错题诊断</h5>
+                    <p class="card-text">分析错题原因并提供建议</p>
+                    <a href="{% url 'mistake_diagnosis:index' %}" class="btn btn-primary">开始诊断</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

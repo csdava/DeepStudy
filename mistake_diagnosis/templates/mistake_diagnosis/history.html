@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}错题诊断 - 历史记录{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">诊断历史记录</h2>
+                    
+                    {% if records %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>时间</th>
+                                    <th>学科</th>
+                                    <th>知识点</th>
+                                    <th>题目内容</th>
+                                    <th>诊断结果</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in records %}
+                                <tr>
+                                    <td>{{ record.diagnosed_at|date:"Y-m-d H:i" }}</td>
+                                    <td>{{ record.analysis_result.subject }}</td>
+                                    <td>{{ record.analysis_result.knowledge_point }}</td>
+                                    <td>
+                                        <div class="text-truncate" style="max-width: 200px;">
+                                            {{ record.original_question }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-{{ record.id }}">
+                                            查看详情
+                                        </button>
+                                    </td>
+                                </tr>
+                                
+                                <!-- 详情模态框 -->
+                                <div class="modal fade" id="modal-{{ record.id }}" tabindex="-1">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">诊断详情</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h6>题目内容：</h6>
+                                                <p>{{ record.original_question }}</p>
+                                                
+                                                <h6>错误分析：</h6>
+                                                <ul>
+                                                    {% for error in record.analysis_result.errors %}
+                                                    <li>{{ error }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                                
+                                                <h6>改进建议：</h6>
+                                                <ul>
+                                                    {% for suggestion in record.analysis_result.suggestions %}
+                                                    <li>{{ suggestion }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                                
+                                                <h6>推荐资源：</h6>
+                                                <ul>
+                                                    {% for resource in record.suggested_resources.all %}
+                                                    <li>
+                                                        <a href="{{ resource.url }}" target="_blank">
+                                                            {{ resource.title }}
+                                                        </a>
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center">
+                        <p class="lead">暂无诊断记录</p>
+                        <a href="{% url 'mistake_diagnosis:analyze' %}" class="btn btn-primary">开始诊断</a>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="text-center mt-4">
+                        <a href="{% url 'mistake_diagnosis:index' %}" class="btn btn-outline-secondary">返回首页</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
