@@ -18,60 +18,116 @@ client = OpenAI(
 RESOURCE_DATABASE = {
     'math': {
         'video': [
-            {'name': '人教版高中数学必修一课程', 'url': 'https://www.bilibili.com/video/BV1KW411M7vE/', 'level': 'beginner'},
-            {'name': '可汗学院数学课程', 'url': 'https://zh.khanacademy.org/math', 'level': 'intermediate'},
-            {'name': '3Blue1Brown数学可视化', 'url': 'https://space.bilibili.com/88461692/', 'level': 'advanced'},
+            {'name': '高中数学必修一课程', 'search': '高中数学必修一 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中数学必修二课程', 'search': '高中数学必修二 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中数学必修三课程', 'search': '高中数学必修三 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中数学选修一课程', 'search': '高中数学选修一 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中数学选修二课程', 'search': '高中数学选修二 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中数学选修三课程', 'search': '高中数学选修三 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中数学竞赛课程', 'search': '高中数学竞赛 培训 课程', 'level': 'advanced'},
         ],
         'practice': [
-            {'name': '菁优网高中数学题库', 'url': 'https://www.jyeoo.com/math/ques/search', 'level': 'beginner'},
-            {'name': '洛谷编程算法训练', 'url': 'https://www.luogu.com.cn/', 'level': 'advanced'},  # 移除多余斜杠
+            {'name': '高中数学每日一题', 'search': '高中数学每日一题 讲解', 'level': 'beginner'},
+            {'name': '高中数学竞赛题讲解', 'search': '高中数学竞赛题 讲解 视频', 'level': 'advanced'},
         ],
         'text': [
-            {'name': '高中数学知识点总结', 'url': 'https://www.zxxk.com/gaokao/shuxue/', 'level': 'beginner'},
-            {'name': '数学建模竞赛资料', 'url': 'http://www.mcm.edu.cn/', 'level': 'advanced'},  # 保持原链接（官方仍支持HTTP）
+            {'name': '高中数学知识点总结', 'search': '高中数学知识点总结 思维导图', 'level': 'beginner'},
+            {'name': '高中数学竞赛资料', 'search': '高中数学竞赛 资料 真题', 'level': 'advanced'},
         ]
     },
     'physics': {
         'video': [
-            {'name': '人教版高中物理必修课程', 'url': 'https://www.bilibili.com/video/BV1Ns411r7Fd/', 'level': 'beginner'},
-            {'name': '李永乐老师物理课程', 'url': 'https://space.bilibili.com/9458053/', 'level': 'intermediate'},
-            {'name': 'MIT物理公开课', 'url': 'https://ocw.mit.edu/courses/physics/', 'level': 'advanced'},
+            {'name': '高中物理必修一课程', 'search': '高中物理必修一 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中物理必修二课程', 'search': '高中物理必修二 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中物理必修三课程', 'search': '高中物理必修三 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中物理选修一课程', 'search': '高中物理选修一 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中物理选修二课程', 'search': '高中物理选修二 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中物理选修三课程', 'search': '高中物理选修三 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中物理竞赛课程', 'search': '高中物理竞赛 培训 课程', 'level': 'advanced'},
         ],
         'practice': [
-            {'name': '菁优网物理题库', 'url': 'https://www.jyeoo.com/physics/ques/search', 'level': 'beginner'},
-            # 原"物理竞赛在线测评"链接已失效，改为全国中学生物理竞赛官网
-            {'name': '全国中学生物理竞赛官网', 'url': 'http://cso.cast.org.cn/n6/index.html', 'level': 'advanced'},
+            {'name': '高中物理每日一题', 'search': '高中物理每日一题 讲解', 'level': 'beginner'},
+            {'name': '高中物理竞赛题讲解', 'search': '高中物理竞赛题 讲解 视频', 'level': 'advanced'},
         ],
         'text': [
-            # 原"中国物理竞赛网"链接指向中科院物理所，改为更贴切的名称
-            {'name': '中国科学院物理研究所', 'url': 'https://www.iop.cas.cn/', 'level': 'advanced'},
-            {'name': '物理实验资料库', 'url': 'https://www.phy.pku.edu.cn/', 'level': 'intermediate'},
+            {'name': '高中物理知识点总结', 'search': '高中物理知识点总结 思维导图', 'level': 'beginner'},
+            {'name': '高中物理竞赛资料', 'search': '高中物理竞赛 资料 真题', 'level': 'advanced'},
         ]
     },
     'chemistry': {
         'video': [
-            {'name': '人教版高中化学必修课程', 'url': 'https://www.bilibili.com/video/BV1WW411M7AL/', 'level': 'beginner'},
-            {'name': '化学实验视频教程', 'url': 'https://space.bilibili.com/11336264/', 'level': 'intermediate'},
+            {'name': '高中化学必修一课程', 'search': '高中化学必修一 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中化学必修二课程', 'search': '高中化学必修二 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中化学必修三课程', 'search': '高中化学必修三 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中化学选修一课程', 'search': '高中化学选修一 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中化学选修二课程', 'search': '高中化学选修二 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中化学选修三课程', 'search': '高中化学选修三 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中化学竞赛课程', 'search': '高中化学竞赛 培训 课程', 'level': 'advanced'},
         ],
         'practice': [
-            {'name': '菁优网化学题库', 'url': 'https://www.jyeoo.com/chemistry/ques/search', 'level': 'beginner'},
-            # 原"化学竞赛题库"链接失效，改为中国化学会官网
-            {'name': '中国化学会官网', 'url': 'https://www.chemsoc.org.cn/', 'level': 'advanced'},
+            {'name': '高中化学每日一题', 'search': '高中化学每日一题 讲解', 'level': 'beginner'},
+            {'name': '高中化学竞赛题讲解', 'search': '高中化学竞赛题 讲解 视频', 'level': 'advanced'},
+        ],
+        'text': [
+            {'name': '高中化学知识点总结', 'search': '高中化学知识点总结 思维导图', 'level': 'beginner'},
+            {'name': '高中化学竞赛资料', 'search': '高中化学竞赛 资料 真题', 'level': 'advanced'},
         ]
     },
-    # ...（其他科目类似修改，以下仅展示关键修改部分）
     'chinese': {
-        'practice': [
-            {'name': '菁优网语文题库', 'url': 'https://www.jyeoo.com/chinese/ques/search', 'level': 'beginner'},
-            # 原"作文素材库"链接失效，改为教育部认可的中小学作文网
-            {'name': '中国中小学作文网', 'url': 'https://www.zuowen.cn/', 'level': 'intermediate'},
+        'video': [
+            {'name': '高中语文必修一课程', 'search': '高中语文必修一 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中语文必修二课程', 'search': '高中语文必修二 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中语文必修三课程', 'search': '高中语文必修三 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中语文选修一课程', 'search': '高中语文选修一 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中语文选修二课程', 'search': '高中语文选修二 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中语文选修三课程', 'search': '高中语文选修三 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中语文竞赛课程', 'search': '高中语文竞赛 培训 课程', 'level': 'advanced'},
         ],
+        'practice': [
+            {'name': '高中语文每日一题', 'search': '高中语文每日一题 讲解', 'level': 'beginner'},
+            {'name': '高中语文竞赛题讲解', 'search': '高中语文竞赛题 讲解 视频', 'level': 'advanced'},
+        ],
+        'text': [
+            {'name': '高中语文知识点总结', 'search': '高中语文知识点总结 思维导图', 'level': 'beginner'},
+            {'name': '高中语文竞赛资料', 'search': '高中语文竞赛 资料 真题', 'level': 'advanced'},
+        ]
+    },
+    'english': {
+        'video': [
+            {'name': '高中英语必修一课程', 'search': '高中英语必修一 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中英语必修二课程', 'search': '高中英语必修二 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中英语必修三课程', 'search': '高中英语必修三 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中英语选修一课程', 'search': '高中英语选修一 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中英语选修二课程', 'search': '高中英语选修二 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中英语选修三课程', 'search': '高中英语选修三 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中英语竞赛课程', 'search': '高中英语竞赛 培训 课程', 'level': 'advanced'},
+        ],
+        'practice': [
+            {'name': '高中英语每日一题', 'search': '高中英语每日一题 讲解', 'level': 'beginner'},
+            {'name': '高中英语竞赛题讲解', 'search': '高中英语竞赛题 讲解 视频', 'level': 'advanced'},
+        ],
+        'text': [
+            {'name': '高中英语知识点总结', 'search': '高中英语知识点总结 思维导图', 'level': 'beginner'},
+            {'name': '高中英语竞赛资料', 'search': '高中英语竞赛 资料 真题', 'level': 'advanced'},
+        ]
     },
     'biology': {
+        'video': [
+            {'name': '高中生物必修一课程', 'search': '高中生物必修一 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中生物必修二课程', 'search': '高中生物必修二 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中生物必修三课程', 'search': '高中生物必修三 人教版 完整课程', 'level': 'beginner'},
+            {'name': '高中生物选修一课程', 'search': '高中生物选修一 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中生物选修二课程', 'search': '高中生物选修二 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中生物选修三课程', 'search': '高中生物选修三 人教版 完整课程', 'level': 'intermediate'},
+            {'name': '高中生物竞赛课程', 'search': '高中生物竞赛 培训 课程', 'level': 'advanced'},
+        ],
         'practice': [
-            {'name': '菁优网生物题库', 'url': 'https://www.jyeoo.com/biology/ques/search', 'level': 'beginner'},
-            # 原"生物竞赛题库"链接失效，改为中国动物学会官网
-            {'name': '中国动物学会竞赛', 'url': 'http://czs.ioz.cas.cn/xsxh/xsjs/', 'level': 'advanced'},
+            {'name': '高中生物每日一题', 'search': '高中生物每日一题 讲解', 'level': 'beginner'},
+            {'name': '高中生物竞赛题讲解', 'search': '高中生物竞赛题 讲解 视频', 'level': 'advanced'},
+        ],
+        'text': [
+            {'name': '高中生物知识点总结', 'search': '高中生物知识点总结 思维导图', 'level': 'beginner'},
+            {'name': '高中生物竞赛资料', 'search': '高中生物竞赛 资料 真题', 'level': 'advanced'},
         ]
     },
     'geography': {
@@ -250,6 +306,8 @@ def parse_ai_response(content):
             path_content = path_match.group(1).strip()
             print("学习路径内容:", path_content)
             sections["path_map"] = parse_learning_path(path_content)
+            # 保存原始路径内容用于显示
+            sections["raw_path"] = path_content
         else:
             print("未找到学习路径部分")
 
@@ -283,6 +341,43 @@ def parse_ai_response(content):
 # 在调用parse_ai_response后添加
 
 # ====================== 辅助函数 ======================
+def _clean_mermaid_text(text):
+    """清理文本以避免Mermaid解析错误 - 最终版本"""
+    # 1. 确保文本是单行，替换所有换行符为单个空格，并去除首尾空格
+    cleaned_text = text.replace('\n', ' ').replace('\r', ' ').strip()
+
+    # 2. **最先处理**：移除链接 [text](url) 格式
+    #    这里移除整个 `[text](url)` 部分，因为其内部可能包含复杂Markdown
+    cleaned_text = re.sub(r'\[.*?\]\(.*?\)', '', cleaned_text)
+
+    # 3. 移除粗体 (**text** or __text__) 和斜体 (*text* or _text_) 标记
+    #    使用非贪婪匹配 (.*?) 并保留捕获组的内容 (即被 bold/italic 包裹的文字)
+    cleaned_text = re.sub(r'\*\*([^\*]*?)\*\*|__([^_]*?)__|\*([^\*]*?)\*|_([^_]*?)_', r'\1\2\3\4', cleaned_text)
+
+    # 4. 移除任何残留在文本中的括号或方括号及其内容
+    #    例如 "(如图片、动画)" 或 "[详情]"。这里使用非贪婪匹配。
+    cleaned_text = re.sub(r'\(.*?\)|\[.*?\]', '', cleaned_text)
+
+    # 5. 移除 Markdown 列表标记（数字点、中文顿号、项目符号）及其前后的空格
+    #    这里的正则表达式旨在捕获各种列表前缀，无论其在行首还是行中（作为词分隔符）
+    cleaned_text = re.sub(r'(?:^|\s)(?:\d+[.\、]|[-*+•])\s*', ' ', cleaned_text).strip()
+
+    # 6. 移除任何 Markdown 标题符号 (# ## ### 等)
+    cleaned_text = re.sub(r'#+\s*', '', cleaned_text)
+
+    # 7. 转义Mermaid中双引号，使其不会破坏节点定义
+    cleaned_text = cleaned_text.replace('"', '\\"')
+
+    # 8. 转义Mermaid中方括号，防止误解析为链接或其他Markdown元素
+    #    Mermaid 期望 `\[` 和 `\]` 作为节点文本中的字面括号
+    cleaned_text = cleaned_text.replace('[', '\\[')
+    cleaned_text = cleaned_text.replace(']', '\\]')
+
+    # 9. 最后再次去除多余的空格，确保文本整洁
+    cleaned_text = ' '.join(cleaned_text.split()).strip()
+
+    return cleaned_text
+
 def generate_mermaid_diagram(stages):
     """生成Mermaid.js格式的学习路径图"""
     if not stages:
@@ -290,21 +385,22 @@ def generate_mermaid_diagram(stages):
 
     print("生成图表的输入数据:", stages)  # 调试输出
 
-    mermaid_code = ["graph TD;"]
+    mermaid_code = ["graph TD"]
 
     # 添加样式定义
-    mermaid_code.append("classDef stage fill:#e1f5fe,stroke:#01579b,stroke-width:2px;")
-    mermaid_code.append("classDef step fill:#f3e5f5,stroke:#4a148c,stroke-width:1px;")
+    mermaid_code.append("classDef stage fill:#e1f5fe,stroke:#01579b,stroke-width:2px")
+    mermaid_code.append("classDef step fill:#f3e5f5,stroke:#4a148c,stroke-width:1px")
 
     for i, stage in enumerate(stages, 1):
         stage_id = f"S{i}"
-        stage_title = f"{stage.get('stage', str(i))}. {stage.get('title', '未命名阶段')}"
+        # 阶段标题不再拼接编号，只使用纯文本标题
+        stage_title = _clean_mermaid_text(stage.get('title', '未命名阶段'))
         mermaid_code.append(f'{stage_id}["{stage_title}"]')
-        mermaid_code.append(f'class {stage_id} stage;')
+        mermaid_code.append(f'class {stage_id} stage')
 
         # 添加目标节点
         goal_id = f"G{i}"
-        goal_text = stage.get('goal', '暂无目标').replace('"', "'")
+        goal_text = _clean_mermaid_text(stage.get('goal', '暂无目标'))
         mermaid_code.append(f'{goal_id}["目标: {goal_text}"]')
         mermaid_code.append(f'{stage_id} --> {goal_id}')
 
@@ -312,17 +408,17 @@ def generate_mermaid_diagram(stages):
         steps = stage.get('steps', [])
         for j, step in enumerate(steps, 1):
             step_id = f"S{i}_Step{j}"
-            step_text = step.replace('"', "'")
-            mermaid_code.append(f'{step_id}["{j}. {step_text}"]')
+            step_text = _clean_mermaid_text(step)
+            mermaid_code.append(f'{step_id}["{step_text}"]')
             mermaid_code.append(f'{goal_id} --> {step_id}')
-            mermaid_code.append(f'class {step_id} step;')
+            mermaid_code.append(f'class {step_id} step')
 
         # 连接各阶段
         if i > 1:
-            mermaid_code.append(f'S{i - 1} --> S{i}')
+            mermaid_code.append(f'S{i-1} --> S{i}')
 
-    print("生成的Mermaid代码:", "\\n".join(mermaid_code))  # 调试输出
-    return "\\n".join(mermaid_code)
+    print("生成的Mermaid代码:", "\n".join(mermaid_code))  # 调试输出
+    return "\n".join(mermaid_code)
 
 
 def match_resources(subject, progress_level, learning_style):
@@ -406,7 +502,7 @@ def learning_path_recommendation(request):
         form = StudentInfoForm(request.POST)
         if not form.is_valid():
             context['error_message'] = '表单验证失败'
-            return render(request, 'learning_path_form.html', context)
+            return render(request, 'learning_path_recommendation/learning_path_form.html', context)
 
         try:
             data = form.cleaned_data
@@ -425,11 +521,18 @@ def learning_path_recommendation(request):
 2. [具体步骤2]
 3. [具体步骤3]
 
-#### 阶段2：[阶段名称]
+#### 阶段2：能力提升
 - 目标：[具体目标描述]
 1. [具体步骤1]
 2. [具体步骤2]
 3. [具体步骤3]
+
+#### 阶段3：综合应用
+- 目标：[具体目标描述]
+1. [具体步骤1]
+2. [具体步骤2]
+3. [具体步骤3]
+
 ### 推荐学习资源
 - [资源名称1]【视频】(https://example.com/resource1)
 - [资源名称2]【练习】(https://example.com/resource2)
@@ -461,6 +564,8 @@ def learning_path_recommendation(request):
 2. 每个阶段都包含目标和具体步骤
 3. 资源推荐要带有类型标记【】和链接()
 4. 时间规划要包含总耗时、每日建议和具体顺序
+5. 三个阶段要循序渐进，从基础到应用
+6. 在详细内容部分只显示学习路径的三个阶段，不显示资源和时间规划部分
 """
 
             # 调用API获取响应
@@ -516,19 +621,19 @@ def learning_path_recommendation(request):
                 'schedule': structured_data.get('schedule', {}),
                 'visualization': mermaid_diagram,
                 'learning_status': learning_status,
-                'raw_content': mark_safe(raw_content.replace('\n', '<br>'))
+                'raw_content': mark_safe(structured_data['raw_path'].replace('\n', '<br>'))
             })
 
-            return render(request, 'learning_path_result.html', context)
+            return render(request, 'learning_path_recommendation/learning_path_result.html', context)
 
         except Exception as e:
             import traceback
             print("错误详情：", traceback.format_exc())  # 详细错误信息
             context['error_message'] = f'服务暂不可用：{str(e)}'
-            return render(request, 'error.html', context)
+            return render(request, 'learning_path_recommendation/error.html', context)
 
-    return render(request, 'learning_path_form.html', context)
+    return render(request, 'learning_path_recommendation/learning_path_form.html', context)
 
 
 def redirect_to_form(request):
-    return redirect('learning_path')
+    return render(request, 'learning_path_recommendation/learning_path_form.html', {'form': StudentInfoForm()})
