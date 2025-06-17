@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">生成学习报告</h3>
+                </div>
+                <div class="card-body">
+                    <form id="generateReportForm" method="post">
+                        {% csrf_token %}
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">生成报告</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('generateReportForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    fetch('{% url "learning_report:generate_report" %}', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = `/learning_report/view/${data.report_id}/`;
+        } else {
+            alert('生成报告失败：' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('生成报告时发生错误');
+    });
+});
+</script>
+{% endblock %} 

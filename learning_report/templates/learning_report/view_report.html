@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">学习报告</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5>学习时间</h5>
+                                    <h3 class="text-primary">{{ study_time }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5>学习进度</h5>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: {{ progress }}%;" 
+                                             aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
+                                            {{ progress }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5>是否学到新知识</h5>
+                                    <h3 class="{% if learned_new == '是' %}text-success{% else %}text-danger{% endif %}">
+                                        {{ learned_new }}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5>是否克服困难</h5>
+                                    <h3 class="{% if overcame == '是' %}text-success{% else %}text-danger{% endif %}">
+                                        {{ overcame }}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <p class="text-muted">生成时间：{{ created_at }}</p>
+                        <a href="{% url 'learning_report:report_list' %}" class="btn btn-secondary">返回列表</a>
+                        <a href="{% url 'learning_report:generate_report' %}" class="btn btn-primary">生成新报告</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

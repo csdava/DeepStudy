@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block title %}成绩分析 - 教师端{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">成绩分析</h2>
+    
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="classSelect">选择班级：</label>
+                <select class="form-control" id="classSelect">
+                    <option value="">请选择班级</option>
+                    <option value="1">高一(1)班</option>
+                    <option value="2">高一(2)班</option>
+                    <option value="3">高一(3)班</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="studentSelect">选择学生：</label>
+                <select class="form-control" id="studentSelect" disabled>
+                    <option value="">请先选择班级</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">班级成绩趋势</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="classChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">学生成绩趋势</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="studentChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 初始化图表
+    const classCtx = document.getElementById('classChart').getContext('2d');
+    const studentCtx = document.getElementById('studentChart').getContext('2d');
+
+    const classChart = new Chart(classCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: '班级平均分',
+                data: [],
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    min: 0,
+                    max: 100
+                }
+            }
+        }
+    });
+
+    const studentChart = new Chart(studentCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: '学生成绩',
+                data: [],
+                borderColor: 'rgb(255, 99, 132)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    min: 0,
+                    max: 100
+                }
+            }
+        }
+    });
+
+    // 生成随机成绩数据
+    function randomScores() {
+        const dates = [];
+        const scores = [];
+        for (let i = 1; i <= 5; i++) {
+            dates.push('2024-0' + i + '-01');
+            scores.push(Math.floor(Math.random() * 40) + 60); // 60~100
+        }
+        return {dates, scores};
+    }
+
+    // 事件监听
+    document.getElementById('classSelect').addEventListener('change', function() {
+        const classId = this.value;
+        if (classId) {
+            // 随机生成班级成绩
+            const data = randomScores();
+            classChart.data.labels = data.dates;
+            classChart.data.datasets[0].data = data.scores;
+            classChart.update();
+
+            // 随机生成学生列表
+            const studentSelect = document.getElementById('studentSelect');
+            studentSelect.innerHTML = '<option value="">请选择学生</option>';
+            for (let i = 1; i <= 5; i++) {
+                studentSelect.innerHTML += `<option value="${i}">学生${i}</option>`;
+            }
+            studentSelect.disabled = false;
+        } else {
+            document.getElementById('studentSelect').disabled = true;
+            document.getElementById('studentSelect').innerHTML = '<option value="">请先选择班级</option>';
+        }
+    });
+
+    document.getElementById('studentSelect').addEventListener('change', function() {
+        const studentId = this.value;
+        if (studentId) {
+            // 随机生成学生成绩
+            const data = randomScores();
+            studentChart.data.labels = data.dates;
+            studentChart.data.datasets[0].data = data.scores;
+            studentChart.update();
+        }
+    });
+});
+</script>
+{% endblock %} 
