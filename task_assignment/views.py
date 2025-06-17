@@ -17,7 +17,7 @@ def create_task(request):
         if form.is_valid():
             form.save()
             messages.success(request, '任务创建成功！')
-            return redirect('task_list')
+            return redirect('task_assignment:task_list')
     else:
         form = TaskForm()
     return render(request, 'task_assignment/task_form.html', {'form': form, 'title': '创建任务'})
@@ -30,7 +30,7 @@ def edit_task(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, '任务更新成功！')
-            return redirect('task_list')
+            return redirect('task_assignment:task_list')
     else:
         form = TaskForm(instance=task)
     return render(request, 'task_assignment/task_form.html', {'form': form, 'title': '编辑任务'})
@@ -41,5 +41,5 @@ def delete_task(request, pk):
     if request.method == 'POST':
         task.delete()
         messages.success(request, '任务删除成功！')
-        return redirect('task_list')
+        return redirect('task_assignment:task_list')
     return render(request, 'task_assignment/task_confirm_delete.html', {'task': task})
