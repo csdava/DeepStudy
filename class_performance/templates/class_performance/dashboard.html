@@ -12,9 +12,9 @@
                 <label for="classSelect">选择班级：</label>
                 <select class="form-control" id="classSelect">
                     <option value="">请选择班级</option>
-                    <option value="1">高一(1)班</option>
-                    <option value="2">高一(2)班</option>
-                    <option value="3">高一(3)班</option>
+                    {% for class in classes %}
+                    <option value="{{ class.id }}">{{ class.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -108,33 +108,44 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 生成随机成绩数据
-    function randomScores() {
+    function generateRandomScores() {
         const dates = [];
         const scores = [];
-        for (let i = 1; i <= 5; i++) {
-            dates.push('2024-0' + i + '-01');
-            scores.push(Math.floor(Math.random() * 40) + 60); // 60~100
+        const baseDate = new Date();
+        
+        for (let i = 4; i >= 0; i--) {
+            const date = new Date(baseDate);
+            date.setMonth(date.getMonth() - i);
+            dates.push(date.toISOString().slice(0, 10));
+            scores.push(Math.floor(Math.random() * 40) + 60); // 60~100之间的随机数
         }
-        return {dates, scores};
+        return { dates, scores };
     }
 
     // 事件监听
     document.getElementById('classSelect').addEventListener('change', function() {
         const classId = this.value;
         if (classId) {
-            // 随机生成班级成绩
-            const data = randomScores();
-            classChart.data.labels = data.dates;
-            classChart.data.datasets[0].data = data.scores;
+            // 生成随机班级成绩数据
+            const classData = generateRandomScores();
+            classChart.data.labels = classData.dates;
+            classChart.data.datasets[0].data = classData.scores;
             classChart.update();
 
-            // 随机生成学生列表
-            const studentSelect = document.getElementById('studentSelect');
-            studentSelect.innerHTML = '<option value="">请选择学生</option>';
-            for (let i = 1; i <= 5; i++) {
-                studentSelect.innerHTML += `<option value="${i}">学生${i}</option>`;
-            }
-            studentSelect.disabled = false;
+            // 获取学生列表
+            fetch(`/class_performance/get_students/?class_id=${classId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const studentSelect = document.getElementById('studentSelect');
+                    studentSelect.innerHTML = '<option value="">请选择学生</option>';
+                    data.students.forEach(student => {
+                        studentSelect.innerHTML += `<option value="${student.id}">${student.name}</option>`;
+                    });
+                    studentSelect.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error fetching students:', error);
+                });
         } else {
             document.getElementById('studentSelect').disabled = true;
             document.getElementById('studentSelect').innerHTML = '<option value="">请先选择班级</option>';
@@ -144,10 +155,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('studentSelect').addEventListener('change', function() {
         const studentId = this.value;
         if (studentId) {
-            // 随机生成学生成绩
-            const data = randomScores();
-            studentChart.data.labels = data.dates;
-            studentChart.data.datasets[0].data = data.scores;
+            // 生成随机学生成绩数据
+            const studentData = generateRandomScores();
+            studentChart.data.labels = studentData.dates;
+            studentChart.data.datasets[0].data = studentData.scores;
             studentChart.update();
         }
     });
