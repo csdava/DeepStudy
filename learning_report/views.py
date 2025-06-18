@@ -18,6 +18,8 @@ import os
 from datetime import datetime, timedelta
 import traceback
 from django.db import models
+from django.contrib.auth.decorators import login_required
+import requests
 
 # 配置日志
 logger = logging.getLogger(__name__)
@@ -411,14 +413,14 @@ def generate_interaction_chart(records):
         logger.error(f"Error in generate_interaction_chart: {str(e)}")
         return None
 
-def view_report_list(request):
-    print("=== view_report_list called ===")
+def list_all_weekly_reports(request):
+    print("=== list_all_weekly_reports called ===")
     try:
         reports = WeeklyReport.objects.all().order_by('-created_at')
         print("=== WeeklyReport count:", reports.count())
         return render(request, 'learning_report/report_list.html', {'reports': reports})
     except Exception as e:
-        print("=== view_report_list except ===")
+        print("=== list_all_weekly_reports except ===")
         print(traceback.format_exc())
         return render(request, 'learning_report/error.html', {
             'error_message': f'获取报告列表时出错，请稍后重试。错误详情：{e}'
@@ -440,3 +442,119 @@ def view_report_detail(request, report_id):
         return render(request, 'learning_report/error.html', {
             'error_message': '加载报告详情时出错，请稍后重试。'
         })
+
+@login_required
+def report_list(request):
+    # 从Flask API获取错题数据
+    try:
+        response = requests.get(
+            'http://localhost:5001/api/problems/analysis',
+            params={'user_id': request.user.id},
+            timeout=10
+        )
+        if response.status_code == 200:
+            problem_data = response.json()
+            
+            # 分析错题数据
+            analysis = analyze_problem_data(problem_data)
+            
+            # 获取最近一周的错题趋势
+            weekly_trend = get_weekly_trend(problem_data)
+            
+            # 获取知识点掌握情况
+            knowledge_points = analyze_knowledge_points(problem_data)
+            
+            context = {
+                'analysis': analysis,
+                'weekly_trend': weekly_trend,
+                'knowledge_points': knowledge_points,
+                'last_updated': datetime.now().strftime('%Y-%m-%d %H:%M')
+            }
+            return render(request, 'learning_report/report_list.html', context)
+        else:
+            # 如果状态码不是200，记录错误并返回错误信息
+            logger.error(f"Flask API returned non-200 status: {response.status_code} - {response.text}")
+            return render(request, 'learning_report/report_list.html', {
+                'error': f'从错题管理系统获取数据失败，状态码：{response.status_code}'
+            })
+    except requests.RequestException as e:
+        logger.error(f"Error connecting to Flask API: {str(e)}")
+        return render(request, 'learning_report/report_list.html', {
+            'error': '无法连接到错题管理系统，请稍后再试。'
+        })
+
+def analyze_problem_data(problem_data):
+    """分析错题数据，生成统计信息"""
+    analysis = {
+        'total_problems': len(problem_data),
+        'difficulty_distribution': {
+            'easy': 0,
+            'medium': 0,
+            'hard': 0
+        },
+        'subject_distribution': {},
+        'common_mistakes': [],
+        'improvement_areas': []
+    }
+    
+    # 统计难度分布
+    for problem in problem_data:
+        difficulty = problem.get('difficulty', 'medium')
+        analysis['difficulty_distribution'][difficulty] += 1
+        
+        # 统计科目分布
+        subject = problem.get('subject', '未知')
+        analysis['subject_distribution'][subject] = analysis['subject_distribution'].get(subject, 0) + 1
+        
+        # 收集常见错误
+        if 'mistake_type' in problem:
+            analysis['common_mistakes'].append(problem['mistake_type'])
+    
+    # 计算需要改进的领域
+    for subject, count in analysis['subject_distribution'].items():
+        if count > analysis['total_problems'] * 0.3:  # 如果某个科目的错题占比超过30%
+            analysis['improvement_areas'].append(subject)
+    
+    return analysis
+
+def get_weekly_trend(problem_data):
+    """获取最近一周的错题趋势"""
+    today = datetime.now()
+    week_ago = today - timedelta(days=7)
+    
+    daily_problems = {}
+    for i in range(7):
+        date = (today - timedelta(days=i)).strftime('%Y-%m-%d')
+        daily_problems[date] = 0
+    
+    for problem in problem_data:
+        problem_date = datetime.fromisoformat(problem.get('created_at', '')).strftime('%Y-%m-%d')
+        if problem_date in daily_problems:
+            daily_problems[problem_date] += 1
+    
+    return daily_problems
+
+def analyze_knowledge_points(problem_data):
+    """分析知识点掌握情况"""
+    knowledge_points = {}
+    
+    for problem in problem_data:
+        if 'knowledge_points' in problem:
+            for point in problem['knowledge_points']:
+                if point not in knowledge_points:
+                    knowledge_points[point] = {
+                        'total': 0,
+                        'correct': 0,
+                        'mastery_level': 0
+                    }
+                knowledge_points[point]['total'] += 1
+                if problem.get('is_correct', False):
+                    knowledge_points[point]['correct'] += 1
+    
+    # 计算掌握程度
+    for point in knowledge_points:
+        total = knowledge_points[point]['total']
+        correct = knowledge_points[point]['correct']
+        knowledge_points[point]['mastery_level'] = (correct / total) * 100 if total > 0 else 0
+    
+    return knowledge_points
