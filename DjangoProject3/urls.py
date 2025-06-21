@@ -21,6 +21,14 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 from user_management import views as user_views
+from django.views.generic import RedirectView
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+import requests
+import logging
+from class_management.views import proxy_to_flask
+
+logger = logging.getLogger(__name__)
 
 def redirect_to_testgen(request):
     return redirect('test_generator_index')
@@ -51,6 +59,10 @@ urlpatterns = [
     path('diagnosis/', include('mistake_diagnosis.urls', namespace='mistake_diagnosis')),
     path('learning-path/', include('learning_path_recommendation.urls', namespace='learning_path')),
     
-    # 用户管理
-    path('user_management/', include('user_management.urls')),
+    # 错题管理相关
+    path('problem/<uuid:problem_id>/', proxy_to_flask, name='problem_detail'),
+    path('error_management/', proxy_to_flask, name='error_management'),
+    path('error_management/<path:path>', proxy_to_flask, name='error_management_path'),
+    path('api/<path:path>', proxy_to_flask, name='api_proxy'),
+    path('uploads/<path:path>', proxy_to_flask, name='uploads_proxy'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # 添加media文件服务
