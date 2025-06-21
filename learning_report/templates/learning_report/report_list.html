@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习报告列表</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .nav-button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .nav-button:hover {
+            background-color: #0056b3;
+        }
+        .report-card {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">学习报告系统</a>
+                <div class="navbar-nav">
+                    <button class="nav-button" onclick="window.location.href='{% url 'learning_report:report' %}'">生成新报告</button>
+                    <button class="nav-button" onclick="window.location.href='/'">返回首页</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="report-card">
+            <h2 class="text-center mb-4">学习报告列表</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>学习时间</th>
+                            <th>学习进度</th>
+                            <th>作业提交率</th>
+                            <th>作业正确率</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportList">
+                        <!-- 报告列表将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateRandomReport() {
+            return {
+                date: new Date().toLocaleDateString(),
+                studyTime: Math.floor(Math.random() * 60) + 1,
+                studyProgress: Math.floor(Math.random() * 100),
+                homeworkSubmission: Math.floor(Math.random() * 100),
+                homeworkAccuracy: Math.floor(Math.random() * 100)
+            };
+        }
+
+        function displayReports() {
+            const reportList = document.getElementById('reportList');
+            reportList.innerHTML = '';
+
+            // 生成5个随机报告
+            for (let i = 0; i < 5; i++) {
+                const report = generateRandomReport();
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${report.date}</td>
+                    <td>${report.studyTime} 分钟</td>
+                    <td>${report.studyProgress}%</td>
+                    <td>${report.homeworkSubmission}%</td>
+                    <td>${report.homeworkAccuracy}%</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="viewReport(${i})">查看详情</button>
+                    </td>
+                `;
+                reportList.appendChild(row);
+            }
+        }
+
+        function viewReport(index) {
+            // 跳转到报告详情页面
+            window.location.href = `{% url 'learning_report:report' %}`;
+        }
+
+        // 页面加载时显示报告列表
+        window.onload = displayReports;
+    </script>
+</body>
+</html> 

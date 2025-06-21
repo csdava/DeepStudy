@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习报告</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .nav-button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .nav-button:hover {
+            background-color: #0056b3;
+        }
+        .report-card {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .progress {
+            height: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">学习报告系统</a>
+                <div class="navbar-nav">
+                    <button class="nav-button" onclick="generateReport()">生成报告</button>
+                    <button class="nav-button" onclick="window.location.href='/'">返回首页</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="report-card">
+            <h2 class="text-center mb-4">学习报告</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">学习时间</h5>
+                            <p class="card-text" id="studyTime">--:--</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">学习进度</h5>
+                            <div class="progress">
+                                <div class="progress-bar" id="studyProgress" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <p class="mt-2" id="studyProgressText">0%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">作业提交率</h5>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" id="homeworkSubmission" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <p class="mt-2" id="homeworkSubmissionText">0%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">作业正确率</h5>
+                            <div class="progress">
+                                <div class="progress-bar bg-info" id="homeworkAccuracy" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <p class="mt-2" id="homeworkAccuracyText">0%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateReport() {
+            // 生成随机数据
+            const studyTime = Math.floor(Math.random() * 60) + 1; // 1-60分钟
+            const studyProgress = Math.floor(Math.random() * 100); // 0-100%
+            const homeworkSubmission = Math.floor(Math.random() * 100); // 0-100%
+            const homeworkAccuracy = Math.floor(Math.random() * 100); // 0-100%
+
+            // 更新显示
+            document.getElementById('studyTime').textContent = `${studyTime} 分钟`;
+            document.getElementById('studyProgress').style.width = `${studyProgress}%`;
+            document.getElementById('studyProgressText').textContent = `${studyProgress}%`;
+            document.getElementById('homeworkSubmission').style.width = `${homeworkSubmission}%`;
+            document.getElementById('homeworkSubmissionText').textContent = `${homeworkSubmission}%`;
+            document.getElementById('homeworkAccuracy').style.width = `${homeworkAccuracy}%`;
+            document.getElementById('homeworkAccuracyText').textContent = `${homeworkAccuracy}%`;
+        }
+
+        // 页面加载时自动生成一次报告
+        window.onload = generateReport;
+    </script>
+</body>
+</html> 
