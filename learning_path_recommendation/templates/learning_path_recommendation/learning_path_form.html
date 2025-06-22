@@ -1,14 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>AI个性化学习路径推荐</title>
-</head>
-<body>
-    <h1>AI个性化学习路径推荐</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">提交</button>
-    </form>
-</body>
-</html> 
+{% extends 'base.html' %}
+
+{% block title %}AI个性化学习路径推荐 - 深度学习助手{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>AI个性化学习路径推荐</h1>
+            <p class="lead">根据您的学习情况，获取专属学习路径建议</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'student_dashboard' %}" class="btn btn-outline-primary">返回控制台</a>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">填写信息，获取个性化学习路径</h5>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
