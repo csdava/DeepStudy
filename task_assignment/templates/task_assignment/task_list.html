@@ -1,41 +1,46 @@
-{% extends 'task_assignment/base.html' %}
+{% extends 'base.html' %}
+
+{% block title %}任务管理系统 - 任务列表{% endblock %}
 
 {% block content %}
-<div class="row mb-4">
-    <div class="col">
-        <h2>任务列表</h2>
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h2>任务列表</h2>
+        </div>
+        <div class="col text-end">
+            <a href="{% url 'task_assignment:create_task' %}" class="btn btn-primary">
+                创建新任务
+            </a>
+        </div>
     </div>
-    <div class="col text-end">
-        <a href="{% url 'task_assignment:create_task' %}" class="btn btn-primary">创建新任务</a>
-    </div>
-</div>
-
-<div class="row">
-    {% for task in tasks %}
-    <div class="col-md-6 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ task.title }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">班级：{{ task.class_info.name }}</h6>
-                <p class="card-text">{{ task.description }}</p>
-                <p class="card-text">
-                    <small class="text-muted">
-                        创建时间：{{ task.created_at|date:"Y-m-d H:i" }}
-                    </small>
-                </p>
-                <div class="btn-group">
-                    <a href="{% url 'task_assignment:edit_task' task.pk %}" class="btn btn-sm btn-outline-primary">编辑</a>
-                    <a href="{% url 'task_assignment:delete_task' task.pk %}" class="btn btn-sm btn-outline-danger">删除</a>
+    <div class="row">
+        {% for task in tasks %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ task.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">班级：{{ task.class_info.name }}</h6>
+                    <p class="card-text">{{ task.description }}</p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            创建时间：{{ task.created_at|date:"Y-m-d H:i" }}
+                        </small>
+                    </p>
+                    <div class="btn-group">
+                        <a href="{% url 'task_assignment:edit_task' task.pk %}" class="btn btn-sm btn-outline-primary">编辑</a>
+                        <a href="{% url 'task_assignment:delete_task' task.pk %}" class="btn btn-sm btn-outline-danger">删除</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    {% empty %}
-    <div class="col">
-        <div class="alert alert-info">
-            暂无任务，请点击"创建新任务"按钮添加任务。
+        {% empty %}
+        <div class="col">
+            <div class="alert alert-info">
+                暂无任务，请点击"创建新任务"按钮添加任务。
+            </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %} 
