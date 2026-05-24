@@ -85,18 +85,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'DjangoProject3.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
+# Database - Local SQLite
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ds',
-        'USER': '2024',
-        'PASSWORD': 'Hainnu@109',  # 请修改为您的本地MySQL密码
-        'HOST': '10.131.7.99',
-        'PORT': '43306',
-        'OPTIONS': {'charset': 'utf8mb4'}
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
